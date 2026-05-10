@@ -15,7 +15,13 @@ from twilio.rest import Client
 from telegram import Bot
 from huggingface_hub import InferenceClient
 
-app = FastAPI(title="Chat Pipeline", description="Chat to Service Pipeline with Merkle Provenance")
+# MEMBRA Guardrails
+from guardrails import enforce_membra_doctrine
+
+# Enforce MEMBRA Doctrine on startup
+enforce_membra_doctrine()
+
+app = FastAPI(title="MEMBRA - Solana Agent Platform", description="MEMBRA Agent Platform with Real Funds and Cryptographic Proof Anchoring")
 
 
 class ChatRequest(BaseModel):

@@ -7,3 +7,8 @@ twilio
 python-telegram-bot
 huggingface-hub
 python-dotenv
+replicate
+solana
+solders
+base58
+sqlalchemy

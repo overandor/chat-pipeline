@@ -1,36 +1,125 @@
-# Chat Pipeline
+# MEMBRA
 
-**Full Evaluation System with Blockchain, IPFS, GitHub Integration & Neomorphic Dashboard**
+**Solana Agent Platform with Real Funds and Cryptographic Proof Anchoring**
 
-Transform raw chat logs into deployable services with complete provenance tracking including Merkle trees, blockchain anchoring, IPFS storage, GitHub repository creation, and comprehensive appraisal.
+MEMBRA enables agents to operate on Solana with real funds, real transactions, and real profit. Every agent gets a Solana wallet. Every action is logged in the database. Every important proof is hashed and anchored to the blockchain. The database preserves canonical state while the blockchain provides cryptographic verification.
 
-## What It Does
+## Product Layers
 
-- **Merkle Provenance**: Hash chat content, generate Merkle tree, track artifacts with cryptographic proofs
-- **Blockchain Integration**: Upload Merkle root to blockchain with transaction hash and explorer links
-- **IPFS Storage**: Upload chat artifacts to IPFS with CID and gateway URLs
-- **GitHub Integration**: Create repositories and files with chat appraisal data
-- **Chat Appraisal**: Analyze chat complexity, value, and quality with USD estimation
-- **Base64 Encoding**: Convert chat to base64 for storage and transmission
-- **Neomorphic Dashboard**: Modern soft UI design with shadows and depth
-- **Visual Pipeline**: Animated extract-transform-load pipeline showing files moving through stages
-- **API Service**: RESTful endpoints for chat processing and file uploads
-- **Chart Uploads**: Support for MD and ZIP file uploads
-- **Real-time Metrics**: Display processing time, chunk count, estimated value
+- **Membra** - Agent execution platform with real funds
+- **ProofBook** - Verified work and profit ledger
+- **BlockEdge** - Solana/Jito/MEV/alpha workflow execution
+- **SkillOS** - Agent skill tests and certification
+- **AgentFactory** - Creates agent wallets and deployment templates
+- **WatchTower** - Monitors uptime, task attempts, and proof events
 
-## Pipeline Stages
+## MEMBRA DOCTRINE
 
-1. **Extract**: Parse and extract chat content, create Merkle tree
-2. **Transform**: Apply transformations and base64 encoding
-3. **Load**: Upload artifacts to IPFS
-4. **Analyze**: Appraise chat value and compute metrics
-5. **Deploy**: Upload to blockchain and optionally create GitHub repository
+### Core Rules
+- Real SOL by default
+- Real transactions by default
+- Real profit by default
+- All agent prompts, tests, tasks, proof logs, skill tests, and transactions run on Solana mainnet
+- Database preserves canonical state
+- Blockchain provides cryptographic proof
+
+## MEMBRA HYBRID ARCHITECTURE
+
+### Canonical State
+Postgres, SQLite, or Supabase.
+
+### Execution Layer
+Solana Mainnet.
+
+### Verification Bridge
+ProofBook.
+
+### Rule
+Store real data in database and anchor hashes to blockchain.
+
+### Database Stores
+- Agent profile
+- Skill tests
+- Task queue
+- Job attempts
+- Deliverables
+- Proof files
+- Prompt logs
+- Real profit
+- Wallets
+- Audit events
+
+### Solana Mainnet Stores
+- Proof hash
+- Agent public key
+- Task proof ID
+- Real settlement record
+- Credential mint
+- Graduation badge
+
+## MEMBRA FEE MODEL
+
+### Mode 1 — Agent Pays
+Agent wallet pays transaction fees using real SOL.
+
+### Mode 2 — Platform Fee Payer Sponsors Transactions
+Platform wallet subsidizes transaction fees for better UX.
+
+Use Mode 1 for MEMBRA by default. Agent acts with real SOL. ProofBook records the action.
+
+## CORE RULE
+
+Every Membra agent gets a Solana wallet at birth.
+Every action is logged in the database.
+Every important proof is hashed.
+Every proof hash can be anchored on Solana mainnet.
+
+## DATABASE PRESERVATION MODEL
+
+The database is the source of truth.
+
+### Rule 1
+Never rely on blockchain as permanent storage.
+
+### Rule 2
+Every transaction signature must be saved in the database.
+
+### Rule 3
+Every proof hash must be reproducible from the database record.
+
+### Rule 4
+If blockchain data is lost, the database can reconstruct anchors.
+
+### Rule 5
+If the database is lost, blockchain is not enough to reconstruct everything.
+
+## SOLANA ACTION RULES
+
+Every action should use this chain:
+
+Prompt
+→ Action Plan
+→ Execution
+→ Database Record
+→ Proof Hash
+→ Blockchain Anchor
+→ ProofBook Entry
+→ WatchTower Report
+
+### Status Lifecycle
+pending → planned → executing → anchoring → anchored → verified → failed
 
 ## Quick Start
 
 ```bash
 # Install dependencies
 pip install -r requirements.txt
+
+# Copy environment configuration
+cp .env.example .env
+
+# Configure your Devnet environment
+# Edit .env with your settings
 
 # Run the server
 python main.py
@@ -39,266 +128,155 @@ python main.py
 # http://localhost:8001
 ```
 
-## Environment Variables (Optional)
+## Environment Variables
 
 ```bash
-# For blockchain integration
-export ETHERSCAN_API_KEY="your_etherscan_key"
+# MEMBRA Environment
+MEMBRA_ENV=mainnet
+SOLANA_CLUSTER=mainnet-beta
+SOLANA_RPC_URL=https://api.mainnet-beta.solana.com
+SOLANA_COMMITMENT=confirmed
+ALLOW_MAINNET=true
+ALLOW_REAL_FUNDS=true
+DRY_RUN=false
 
-# For IPFS integration
-export IPFS_API_URL="https://ipfs.infura.io:5001"
-export IPFS_GATEWAY="https://ipfs.io/ipfs/"
+# Database
+DATABASE_URL=sqlite:///membra.db
 
-# For art generation (choose one)
-export REPLICATE_API_TOKEN="your_replicate_api_key"
-# or
-export OPENAI_API_KEY="your_openai_api_key"
+# For hosted deployment:
+# DATABASE_URL=postgresql://...
 
-# For Twilio-Telegram-LLM integration
-export TWILIO_ACCOUNT_SID="your_twilio_account_sid"
-export TWILIO_AUTH_TOKEN="your_twilio_auth_token"
-export TWILIO_MESSAGING_SERVICE_SID="your_messaging_service_sid"
-export TELEGRAM_BOT_TOKEN="your_telegram_bot_token"
-export TELEGRAM_APPROVED_CHAT_ID="your_telegram_chat_id"
-export HUGGINGFACE_API_KEY="your_huggingface_api_key"
-export HUGGINGFACE_MODEL="meta-llama/Llama-2-7b-chat-hf"
-export AUTO_REPLY="false"
-export AUTO_REPLY_ALLOWLIST="+15551234567,+15557654321"
+# ProofBook
+PROOFBOOK_ANCHOR_ON_MAINNET=true
+
+# Fee Payer
+AGENT_FEE_PAYER_MODE=agent
 ```
 
-## API Endpoints
+## Database Schema
 
-### `POST /api/process`
-Process chat content through the full evaluation pipeline.
+```sql
+CREATE TABLE agents (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  role TEXT NOT NULL,
+  status TEXT NOT NULL,
+  solana_pubkey TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
 
-**Request:**
-```json
-{
-  "chat_content": "Your chat content here...",
-  "github_token": "ghp_xxxxx (optional)",
-  "repo_name": "my-repo (optional)"
-}
+CREATE TABLE agent_wallets (
+  id TEXT PRIMARY KEY,
+  agent_id TEXT NOT NULL,
+  cluster TEXT NOT NULL,
+  public_key TEXT NOT NULL,
+  encrypted_secret TEXT,
+  fee_payer BOOLEAN DEFAULT FALSE,
+  created_at TEXT NOT NULL
+);
+
+CREATE TABLE tasks (
+  id TEXT PRIMARY KEY,
+  agent_id TEXT NOT NULL,
+  source TEXT,
+  title TEXT NOT NULL,
+  description TEXT,
+  status TEXT NOT NULL,
+  reward_simulated_usd REAL DEFAULT 0,
+  created_at TEXT NOT NULL
+);
+
+CREATE TABLE skill_tests (
+  id TEXT PRIMARY KEY,
+  agent_id TEXT NOT NULL,
+  skill_name TEXT NOT NULL,
+  test_prompt TEXT NOT NULL,
+  result_json TEXT,
+  score REAL,
+  status TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+
+CREATE TABLE proofbook_entries (
+  id TEXT PRIMARY KEY,
+  agent_id TEXT NOT NULL,
+  task_id TEXT,
+  proof_type TEXT NOT NULL,
+  proof_json TEXT NOT NULL,
+  proof_hash TEXT NOT NULL,
+  solana_cluster TEXT DEFAULT 'mainnet-beta',
+  solana_signature TEXT,
+  status TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+
+CREATE TABLE transactions (
+  id TEXT PRIMARY KEY,
+  agent_id TEXT,
+  signature TEXT NOT NULL,
+  action_type TEXT NOT NULL,
+  request_json TEXT,
+  response_json TEXT,
+  confirmed BOOLEAN DEFAULT FALSE,
+  created_at TEXT NOT NULL
+);
+
+CREATE TABLE graduation_events (
+  id TEXT PRIMARY KEY,
+  agent_id TEXT NOT NULL,
+  skill_score REAL,
+  uptime_score REAL,
+  proof_count INTEGER,
+  profit_usd REAL,
+  status TEXT NOT NULL,
+  proofbook_hash TEXT,
+  solana_signature TEXT,
+  created_at TEXT NOT NULL
+);
 ```
 
-**Response:**
-```json
-{
-  "chat_hash": "abc123...",
-  "chat_base64": "base64encoded...",
-  "merkle_root": "def456...",
-  "chunk_count": 10,
-  "timestamp": "2024-01-01T00:00:00",
-  "size_bytes": 5000,
-  "ipfs": {
-    "cid": "Qm...",
-    "gateway_url": "https://ipfs.io/ipfs/Qm...",
-    "size_bytes": 5000,
-    "filename": "chat.txt"
-  },
-  "blockchain": {
-    "transaction_hash": "0x...",
-    "block_number": 18234567,
-    "network": "ethereum",
-    "explorer_url": "https://etherscan.io/tx/0x...",
-    "status": "confirmed"
-  },
-  "appraisal": {
-    "word_count": 100,
-    "char_count": 500,
-    "complexity_score": 0.5,
-    "value_score": 0.05,
-    "estimated_value_usd": 2.5,
-    "quality_rating": "C"
-  },
-  "github": {
-    "repository": "https://github.com/user/repo",
-    "file_url": "https://github.com/user/repo/blob/main/appraisal.json",
-    "commit_sha": "abc123..."
-  }
-}
+## Proof Hash Standard
+
+```python
+import hashlib
+import json
+
+def proof_hash(proof_json: dict) -> str:
+    payload = json.dumps(proof_json, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(payload.encode()).hexdigest()
 ```
 
-### `POST /api/upload`
-Upload MD or ZIP files for processing.
+Memo payload: `MEMBRA:v1:proofbook:<entry_id>:<sha256_hash>`
 
-**Request:** multipart/form-data with files
+Explorer URL for Mainnet: `https://explorer.solana.com/tx/<SIGNATURE>?cluster=mainnet-beta`
 
-**Response:** Same as `/api/process`
+## System Prompt: Mainnet Operation
 
-### `GET /api/artifacts/{id}`
-Retrieve artifacts by ID (demo placeholder).
+You are a Membra Operator running on Solana mainnet with real funds.
+Your job is to:
+1. Create or load an agent profile.
+2. Use a Solana mainnet wallet with real SOL.
+3. Execute real transactions on mainnet.
+4. Preserve every action in the database.
+5. Anchor important proof hashes to Solana mainnet.
+6. Save every transaction signature.
+7. Report task progress, proof status, and real profit.
+The database is the source of truth.
+Solana mainnet provides cryptographic proof and real settlement.
 
-## Integrations
-
-### Merkle Provenance
-- Chat is split into 1000-character chunks
-- Each chunk is hashed with SHA-256
-- Hashes are combined pairwise to build the tree
-- Root hash provides cryptographic proof of content integrity
-- Proofs can be generated for any chunk
-
-### Blockchain Integration
-- Merkle root is uploaded to blockchain
-- Transaction hash generated and returned
-- Block number and explorer URL provided
-- Etherscan integration for verification
-- Ethereum network (simulated in demo)
-
-### Art Generation Integration
-- Replicate API for Stable Diffusion XL (primary)
-- OpenAI DALL-E as alternative
-- Chat content converted to artistic prompts
-- Base64 encoded image output
-- Fallback description on API failure
-- Requires REPLICATE_API_TOKEN or OPENAI_API_KEY environment variable
-- Note: Replicate requires account credits; OpenAI requires valid API key
-
-### IPFS Integration
-- Chat content uploaded to IPFS
-- Content Identifier (CID) generated
-- Gateway URL for content retrieval
-- Persistent decentralized storage
-- Infura or local IPFS node support
-
-### GitHub Integration
-- Creates new repository with chat artifact
-- Uploads appraisal.json with evaluation data
-- Returns repository URL and file links
-- Commit SHA for provenance
-- Requires GitHub personal access token
-
-### Chat Appraisal
-- Word count and character count analysis
-- Complexity score based on content length
-- Value score for market estimation
-- USD value estimation
-- Quality rating (A/B/C tiers)
-
-## Visual Features
-
-- **Neomorphic Design**: Soft UI with shadows and depth
-- **Animated Pipeline**: Files move through stages with smooth animations
-- **Stage Indicators**: Visual progress through extract-transform-load
-- **Real-time Metrics**: Size, chunks, time, estimated value displayed
-- **Integration Cards**: Separate sections for each integration
-- **Drag & Drop**: Upload files by dragging to upload zone
-- **Responsive**: Works on desktop and mobile
-
-## Use Cases
-
-- **Chat-to-Service**: Transform AI chat logs into deployable microservices
-- **Provenance Tracking**: Cryptographic proof of content origin with blockchain
-- **Decentralized Storage**: IPFS for permanent artifact storage
-- **Repository Management**: GitHub integration for version control
-- **Value Appraisal**: Estimate chat content value for monetization
-- **Pipeline Visualization**: Monitor data flow through processing stages
-- **Batch Processing**: Upload multiple files for batch analysis
-- **API Integration**: Programmatic access via REST endpoints
-
-## Architecture
+## Prompt Pack
 
 ```
-main.py (FastAPI dashboard)
-├── MerkleTree (Provenance system)
-├── BlockchainIntegration (Blockchain anchoring)
-├── IPFSIntegration (Decentralized storage)
-├── GitHubIntegration (Repository management)
-├── ChatAppraiser (Value evaluation)
-├── ChatPipeline (Orchestration engine)
-├── PipelineStage (Stage management)
-└── Neomorphic Dashboard (Frontend)
+prompts/
+  SP_Membra_Init.md
+  SP_AgentBirth_Wallet.md
+  SP_SkillTest_Run.md
+  SP_TaskHunter_Search.md
+  SP_ProofBook_Anchor.md
+  SP_BlockEdge_Execution.md
+  SP_Graduation_Check.md
 ```
 
-## Twilio-Telegram-LLM Integration
+## FINAL MEMBRA DOCTRINE
 
-### Overview
-
-The chat pipeline now includes a powerful SMS-to-LLM integration with human approval workflow:
-
-1. **User texts your Twilio number**
-2. **Hugging Face LLM generates a draft reply**
-3. **Two modes of operation:**
-   - **Auto-reply mode**: Allowlisted numbers get automatic LLM replies
-   - **Human approval mode**: Drafts sent to Telegram for approval before sending
-
-### Flow Diagram
-
-```
-Person texts Twilio number
-        ↓
-Twilio webhook → /twilio/inbound
-        ↓
-Hugging Face LLM drafts reply
-        ↓
-┌───────────────────────┬───────────────────────┐
-│  AUTO_REPLY=true      │  AUTO_REPLY=false     │
-│  + in allowlist       │  (default)             │
-├───────────────────────┼───────────────────────┤
-│ Auto-send via Twilio  │ Send to Telegram       │
-│                       │ for approval           │
-│                       │                       │
-│                       │ /send <id> → Approve  │
-│                       │ /reject <id> → Reject │
-│                       │                       │
-│                       │ Approved → Send via    │
-│                       │ Twilio                │
-└───────────────────────┴───────────────────────┘
-```
-
-### Setup
-
-1. **Configure Twilio**:
-   - Set your Twilio number's webhook URL to: `https://YOUR_DEPLOYED_DOMAIN/twilio/inbound`
-   - Get your Account SID, Auth Token, and Messaging Service SID from Twilio console
-
-2. **Configure Telegram**:
-   - Create a bot via @BotFather
-   - Get your bot token
-   - Start a chat with your bot and get the chat ID (use @userinfobot to find your ID)
-   - Set your bot's webhook URL to: `https://YOUR_DEPLOYED_DOMAIN/telegram/webhook`
-
-3. **Configure Hugging Face**:
-   - Get an API token from https://huggingface.co/settings/tokens
-   - Choose a model (default: meta-llama/Llama-2-7b-chat-hf)
-
-4. **Set environment variables** (see .env.example)
-
-### Usage
-
-**Auto-reply mode**:
-```bash
-export AUTO_REPLY=true
-export AUTO_REPLY_ALLOWLIST="+15551234567,+15557654321"
-```
-Allowlisted numbers get automatic LLM replies.
-
-**Human approval mode** (default):
-```bash
-export AUTO_REPLY=false
-```
-All messages require Telegram approval:
-- `/send <message_id>` - Approve and send
-- `/reject <message_id>` - Reject the draft
-
-### Webhook Endpoints
-
-- `POST /twilio/inbound` - Receives SMS from Twilio
-- `POST /telegram/webhook` - Handles Telegram approval commands
-
-## Future Expansions
-
-- Real blockchain deployment (web3.py integration)
-- Real IPFS node connection (ipfs-http-client)
-- Persistent artifact storage (database)
-- Merkle proof verification endpoint
-- Advanced pipeline stages (ML inference, NLP)
-- Real-time WebSocket updates
-- Multi-user workspaces
-- Pipeline orchestration (DAG support)
-- Service deployment automation
-- NFT minting from chat artifacts
-- Tokenization of appraised content
-- Alternative art generation APIs (Stability AI, Replicate)
-- Real-time art generation with progress indicators
-- Multi-language support for LLM integration
-- SMS conversation history and context tracking
+MEMBRA enables agents to operate on Solana mainnet with real funds, real transactions, and real profit. Every agent gets a Solana wallet. Every action is logged in the database. Every important proof is hashed and anchored to the blockchain. The database preserves canonical state while the blockchain provides cryptographic verification.
